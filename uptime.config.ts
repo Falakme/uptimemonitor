@@ -2,20 +2,20 @@ import { MaintenanceConfig, PageConfig, WorkerConfig } from './types/config'
 
 const pageConfig: PageConfig = {
   // Title for your status page
-  title: "lyc8503's Status Page",
+  title: "Falak.me Status",
   // Links shown at the header of your status page, could set `highlight` to `true`
   links: [
-    { link: 'https://github.com/lyc8503', label: 'GitHub' },
-    { link: 'https://blog.lyc8503.net/', label: 'Blog' },
-    { link: 'mailto:me@lyc8503.net', label: 'Email Me', highlight: true },
+    { link: 'https://falak.me', label: 'Main Website' },
+    { link: 'https://academy.falak.me', label: 'Academy' },
+    { link: 'https://community.falak.me', label: 'Community' },
+    { link: 'mailto:contact@falak.me', label: 'Contact', highlight: true },
   ],
   // [OPTIONAL] Group your monitors
   // If not specified, all monitors will be shown in a single list
-  // If specified, monitors will be grouped and ordered, not-listed monitors will be invisble (but still monitored)
-  group: {
-    '🌐 Public (example group name)': ['foo_monitor', 'bar_monitor', 'more monitor ids...'],
-    '🔐 Private': ['test_tcp_monitor'],
-  },
+  // If specified, monitors will be grouped and ordered, not-listed monitors will be invisible (but still monitored)
+  // group: {
+  //   '🌐 Falak Services': ['falak_main', 'falak_academy', 'gardenx', 'falak_community', 'falak_link'],
+  // },
 }
 
 const workerConfig: WorkerConfig = {
@@ -25,72 +25,96 @@ const workerConfig: WorkerConfig = {
   // passwordProtection: 'username:password',
   // Define all your monitors here
   monitors: [
-    // Example HTTP Monitor
+    // Falak.me Main Website
     {
-      // `id` should be unique, history will be kept if the `id` remains constant
-      id: 'foo_monitor',
-      // `name` is used at status page and callback message
-      name: 'My API Monitor',
-      // `method` should be a valid HTTP Method
-      method: 'POST',
-      // `target` is a valid URL
-      target: 'https://example.com',
-      // [OPTIONAL] `tooltip` is ONLY used at status page to show a tooltip
-      tooltip: 'This is a tooltip for this monitor',
-      // [OPTIONAL] `statusPageLink` is ONLY used for clickable link at status page
-      statusPageLink: 'https://example.com',
-      // [OPTIONAL] `hideLatencyChart` will hide status page latency chart if set to true
+      id: 'falak_main',
+      name: 'Falak.me',
+      method: 'GET',
+      target: 'https://falak.me',
+      tooltip: 'Main Falak website',
+      statusPageLink: 'https://falak.me',
       hideLatencyChart: false,
-      // [OPTIONAL] `expectedCodes` is an array of acceptable HTTP response codes, if not specified, default to 2xx
       expectedCodes: [200],
-      // [OPTIONAL] `timeout` in millisecond, if not specified, default to 10000
       timeout: 10000,
-      // [OPTIONAL] headers to be sent
       headers: {
-        'User-Agent': 'Uptimeflare',
-        Authorization: 'Bearer YOUR_TOKEN_HERE',
+        'User-Agent': 'UptimeFlare-Monitor',
       },
-      // [OPTIONAL] body to be sent
-      body: 'Hello, world!',
-      // [OPTIONAL] if specified, the response must contains the keyword to be considered as operational.
-      responseKeyword: 'success',
-      // [OPTIONAL] if specified, the response must NOT contains the keyword to be considered as operational.
-      responseForbiddenKeyword: 'bad gateway',
-      // [OPTIONAL] if specified, will call the check proxy to check the monitor, mainly for geo-specific checks
-      // refer to docs https://github.com/lyc8503/UptimeFlare/wiki/Check-proxy-setup before setting this value
-      // currently supports `worker://` and `http(s)://` proxies
-      checkProxy: 'https://xxx.example.com OR worker://weur',
-      // [OPTIONAL] if true, the check will fallback to local if the specified proxy is down
-      checkProxyFallback: true,
     },
-    // Example TCP Monitor
+    // Falak Academy
     {
-      id: 'test_tcp_monitor',
-      name: 'Example TCP Monitor',
-      // `method` should be `TCP_PING` for tcp monitors
-      method: 'TCP_PING',
-      // `target` should be `host:port` for tcp monitors
-      target: '1.2.3.4:22',
-      tooltip: 'My production server SSH',
-      statusPageLink: 'https://example.com',
-      timeout: 5000,
+      id: 'falak_academy',
+      name: 'Falak Academy',
+      method: 'GET',
+      target: 'https://academy.falak.me',
+      tooltip: 'Falak Academy platform',
+      statusPageLink: 'https://academy.falak.me',
+      hideLatencyChart: false,
+      expectedCodes: [200],
+      timeout: 10000,
+      headers: {
+        'User-Agent': 'UptimeFlare-Monitor',
+      },
+    },
+    // GardenX
+    {
+      id: 'gardenx',
+      name: 'GardenX',
+      method: 'GET',
+      target: 'https://gardenx.falak.me',
+      tooltip: 'GardenX application',
+      statusPageLink: 'https://gardenx.falak.me',
+      hideLatencyChart: false,
+      expectedCodes: [200],
+      timeout: 10000,
+      headers: {
+        'User-Agent': 'UptimeFlare-Monitor',
+      },
+    },
+    // Falak Community
+    {
+      id: 'falak_community',
+      name: 'Falak Community',
+      method: 'GET',
+      target: 'https://community.falak.me',
+      tooltip: 'Falak Community platform',
+      statusPageLink: 'https://community.falak.me',
+      hideLatencyChart: false,
+      expectedCodes: [200],
+      timeout: 10000,
+      headers: {
+        'User-Agent': 'UptimeFlare-Monitor',
+      },
+    },
+    // Falak Link
+    {
+      id: 'falak_link',
+      name: 'Falak Link',
+      method: 'GET',
+      target: 'https://l.falak.me',
+      tooltip: 'Falak Link shortener',
+      statusPageLink: 'https://l.falak.me',
+      hideLatencyChart: false,
+      expectedCodes: [200],
+      timeout: 10000,
+      headers: {
+        'User-Agent': 'UptimeFlare-Monitor',
+      },
     },
   ],
   notification: {
-    // [Optional] apprise API server URL
-    // if not specified, no notification will be sent
-    appriseApiServer: 'https://apprise.example.com/notify',
-    // [Optional] recipient URL for apprise, refer to https://github.com/caronc/apprise
-    // if not specified, no notification will be sent
-    recipientUrl: 'tgram://bottoken/ChatID',
-    // [Optional] timezone used in notification messages, default to "Etc/GMT"
-    timeZone: 'Asia/Shanghai',
-    // [Optional] grace period in minutes before sending a notification
-    // notification will be sent only if the monitor is down for N continuous checks after the initial failure
-    // if not specified, notification will be sent immediately
-    gracePeriod: 5,
-    // [Optional] disable notification for monitors with specified ids
-    skipNotificationIds: ['foo_monitor', 'bar_monitor'],
+    // Notifications disabled - Discord requires Apprise server
+    // To enable notifications, set up an Apprise server and uncomment the lines below:
+    // appriseApiServer: 'https://your-apprise-server.com/notify',
+    // recipientUrl: 'discord://1416359119639547974/ddqycFcXMyEDC_yqzrtF4YUAdW0PmnovRg_tx9af5emoJZ3cldlhVTowTydTIglkPgQ',
+    
+    // Timezone for any future notifications
+    timeZone: 'UTC',
+    
+    // Grace period in minutes before sending a notification
+    gracePeriod: 2,
+    
+    // No notifications will be sent with current config
+    skipNotificationIds: [], 
   },
   callbacks: {
     onStatusChange: async (
@@ -101,10 +125,13 @@ const workerConfig: WorkerConfig = {
       timeNow: number,
       reason: string
     ) => {
-      // This callback will be called when there's a status change for any monitor
-      // Write any Typescript code here
-      // This will not follow the grace period settings and will be called immediately when the status changes
-      // You need to handle the grace period manually if you want to implement it
+      // Custom callback when status changes
+      console.log(`Falak Service ${monitor.name} status changed to ${isUp ? 'UP' : 'DOWN'}: ${reason}`)
+      
+      // You can add custom logic here for Falak services, such as:
+      // - Sending notifications to internal systems
+      // - Updating service dashboards
+      // - Logging to analytics platforms
     },
     onIncident: async (
       env: any,
@@ -113,34 +140,24 @@ const workerConfig: WorkerConfig = {
       timeNow: number,
       reason: string
     ) => {
-      // This callback will be called EVERY 1 MINTUE if there's an on-going incident for any monitor
-      // Write any Typescript code here
+      // Called every minute during ongoing incidents
+      const incidentDuration = Math.floor((timeNow - timeIncidentStart) / 60000) // minutes
+      console.log(`Ongoing incident for Falak service ${monitor.name}: ${incidentDuration} minutes`)
     },
   },
 }
 
-// You can define multiple maintenances here
-// During maintenance, an alert will be shown at status page
-// Also, related downtime notifications will be skipped (if any)
-// Of course, you can leave it empty if you don't need this feature
-// const maintenances: MaintenanceConfig[] = []
+// Scheduled maintenances for Falak services
 const maintenances: MaintenanceConfig[] = [
-  {
-    // [Optional] Monitor IDs to be affected by this maintenance
-    monitors: ['foo_monitor', 'bar_monitor'],
-    // [Optional] default to "Scheduled Maintenance" if not specified
-    title: 'Test Maintenance',
-    // Description of the maintenance, will be shown at status page
-    body: 'This is a test maintenance, server software upgrade',
-    // Start time of the maintenance, in UNIX timestamp or ISO 8601 format
-    start: '2025-04-27T00:00:00+08:00',
-    // [Optional] end time of the maintenance, in UNIX timestamp or ISO 8601 format
-    // if not specified, the maintenance will be considered as on-going
-    end: '2025-04-30T00:00:00+08:00',
-    // [Optional] color of the maintenance alert at status page, default to "yellow"
-    color: 'blue',
-  },
+  // Example maintenance - modify dates and services as needed
+  // {
+  //   monitors: ['falak_main', 'falak_academy'], // Which Falak services are affected
+  //   title: 'Server Maintenance',
+  //   body: 'Scheduled maintenance for server updates and performance improvements',
+  //   start: '2025-01-15T02:00:00+00:00', // Adjust date/time and timezone
+  //   end: '2025-01-15T04:00:00+00:00',   // 2-hour maintenance window
+  //   color: 'blue',
+  // },
 ]
 
-// Don't forget this, otherwise compilation fails.
 export { pageConfig, workerConfig, maintenances }
