@@ -1,6 +1,6 @@
 import { MaintenanceConfig, MonitorTarget } from '@/types/config'
-import { Center, Container, Title } from '@mantine/core'
-import { IconCircleCheck, IconAlertCircle } from '@tabler/icons-react'
+import { Center, Container, Title, Text, Group, ThemeIcon, Badge } from '@mantine/core'
+import { IconCircleCheck, IconAlertCircle, IconClock } from '@tabler/icons-react'
 import { useEffect, useState } from 'react'
 import MaintenanceAlert from './MaintenanceAlert'
 import { pageConfig } from '@/uptime.config'
@@ -28,18 +28,28 @@ export default function OverallStatus({
   let groupedMonitor = (group && Object.keys(group).length > 0) || false
 
   let statusString = ''
-  let icon = <IconAlertCircle style={{ width: 64, height: 64, color: '#b91c1c' }} />
+  let icon = <IconAlertCircle size={48} />
+  let statusColor = 'red'
+  let badgeText = 'Issues Detected'
+  
   if (state.overallUp === 0 && state.overallDown === 0) {
-    statusString = 'No data yet'
+    statusString = 'Initializing monitors...'
+    icon = <IconClock size={48} />
+    statusColor = 'orange'
+    badgeText = 'Loading'
   } else if (state.overallUp === 0) {
     statusString = 'All systems not operational'
+    statusColor = 'red'
+    badgeText = 'Critical'
   } else if (state.overallDown === 0) {
     statusString = 'All systems operational'
-    icon = <IconCircleCheck style={{ width: 64, height: 64, color: '#059669' }} />
+    icon = <IconCircleCheck size={48} />
+    statusColor = 'green'
+    badgeText = 'Operational'
   } else {
-    statusString = `Some systems not operational (${state.overallDown} out of ${
-      state.overallUp + state.overallDown
-    })`
+    statusString = `Partial outage detected`
+    statusColor = 'orange'
+    badgeText = `${state.overallDown} Issues`
   }
 
   const [openTime] = useState(Math.round(Date.now() / 1000))
@@ -69,25 +79,35 @@ export default function OverallStatus({
       }))
 
   return (
-    <Container size="md" mt="xl">
-      <Center>{icon}</Center>
-      <Title mt="sm" style={{ textAlign: 'center' }} order={1}>
+    <div style={{ textAlign: 'center' }}>
+      <Group justify="center" mb="md">
+        <ThemeIcon size={60} radius="xl" variant="light" color={statusColor}>
+          {icon}
+        </ThemeIcon>
+        <Badge size="lg" variant="light" color={statusColor} style={{ padding: '0.5rem 1rem' }}>
+          {badgeText}
+        </Badge>
+      </Group>
+      
+      <Text size="lg" fw={600} mb="xs" style={{ color: 'white' }}>
         {statusString}
-      </Title>
-      <Title mt="sm" style={{ textAlign: 'center', color: '#70778c' }} order={5}>
-        Last updated on:{' '}
-        {`${new Date(state.lastUpdate * 1000).toLocaleString()} (${
-          currentTime - state.lastUpdate
-        } sec ago)`}
-      </Title>
+      </Text>
+      
+      <Text size="sm" opacity={0.8} mb="lg">
+        Last updated: {new Date(state.lastUpdate * 1000).toLocaleString()}
+        <br />
+        <Text component="span" size="xs" opacity={0.7}>
+          Updated {currentTime - state.lastUpdate} seconds ago
+        </Text>
+      </Text>
 
       {filteredMaintenances.map((maintenance, idx) => (
         <MaintenanceAlert
           key={idx}
           maintenance={maintenance}
-          style={{ maxWidth: groupedMonitor ? '897px' : '865px' }}
+          style={{ maxWidth: groupedMonitor ? '897px' : '865px', marginTop: '1rem' }}
         />
       ))}
-    </Container>
+    </div>
   )
 }

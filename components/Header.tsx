@@ -1,4 +1,5 @@
-import { Container, Group, Text } from '@mantine/core'
+import { Container, Group, Text, Paper, ThemeIcon, Badge } from '@mantine/core'
+import { IconActivity } from '@tabler/icons-react'
 import classes from '@/styles/Header.module.css'
 import { pageConfig } from '@/uptime.config'
 import { PageConfigLink } from '@/types/config'
@@ -20,23 +21,26 @@ export default function Header() {
 
   return (
     <header className={classes.header}>
-      <Container size="md" className={classes.inner}>
-        <div>
-          <a href="https://github.com/lyc8503/UptimeFlare" target="_blank">
-            <Text size="xl" span>
-              🕒
-            </Text>
+      <Container size="lg" className={classes.inner}>
+        <Group gap="sm">
+          <ThemeIcon size="lg" radius="xl" variant="gradient" gradient={{ from: 'blue', to: 'cyan' }}>
+            <IconActivity size={20} />
+          </ThemeIcon>
+          <div>
             <Text
               size="xl"
-              span
               fw={700}
               variant="gradient"
               gradient={{ from: 'blue', to: 'cyan', deg: 90 }}
+              style={{ lineHeight: 1.2 }}
             >
-              UptimeFlare
+              {pageConfig.title || 'UptimeFlare'}
             </Text>
-          </a>
-        </div>
+            <Badge variant="light" color="green" size="xs">
+              Live Monitoring
+            </Badge>
+          </div>
+        </Group>
 
         <Group gap={5} visibleFrom="sm">
           {pageConfig.links?.map(linkToElement)}
